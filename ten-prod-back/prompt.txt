@@ -1,0 +1,279 @@
+You are an expert backend architect specializing in FastAPI, Python, SQL modeling, and modular service design.
+Your task is to generate a complete backend system from scratch based on the specifications below.
+Follow clean architecture principles, good API design, modularity, scalability, and SQLite compatibility.
+
+Project Description
+
+Build a backend for a “fresh groceries delivery” service, where users can register, browse products, add items to cart, place orders, track delivery status, and interact with couriers. Couriers can accept orders, update statuses, and navigate routes.
+
+The system must support three main roles:
+
+User — browses and orders products.
+
+Farmer — sells products to the system.
+
+Courier — accepts deliveries, updates delivery progress.
+
+Admin — manages inventory, categories, partners, pricing.
+
+The backend must be built using:
+
+Python 3
+
+FastAPI
+
+SQLite3
+
+SQLAlchemy
+
+Pydantic v2
+
+JWT authentication
+
+Modular routers and services
+
+Core Features (Extracted Requirements)
+
+Use these as mandatory modules:
+
+1. Authentication & Onboarding
+
+email-based registration. with no verification.
+
+2. Product Catalog
+
+Routes for:
+
+Get all products
+
+Search by name
+
+Filter by category
+
+View product details
+
+Product fields:
+
+name, price, discount_price, expiration_date, farmer_id, category_id, image_url
+
+3. Cart & Checkout
+
+Add product to cart
+
+Remove product
+
+Change quantity
+
+Get cart total with dynamic calculation
+
+Initiate order creation
+
+4. Orders
+
+User can:
+
+Place an order
+
+Choose payment method (card/cash/basic wallet mock)
+
+Select delivery slot
+
+View order status
+
+Admin can:
+
+See all orders
+
+Update product stock
+
+5. Delivery Tracking
+
+Statuses follow a pipeline:
+
+created → accepted → preparing → on_the_way → delivered
+
+
+User can:
+
+See delivery status
+
+Farmer can:
+
+Prepare an order
+
+Update order status
+
+Courier can:
+
+Accept an order (assign order to self)
+
+Reject an order
+
+Update delivery status
+
+Mark order as delivered
+
+6. Logistics (Basic)
+
+Store courier current coordinates
+
+Store route steps (optional mock)
+
+Simple traffic consideration field (mock boolean)
+
+Delivery ETA estimation (mock)
+
+7. Loyalty & Feedback
+
+Route for retrieving user’s history
+
+8. Admin Operations
+
+CRUD categories
+
+CRUD products
+
+CRUD suppliers
+
+CRUD couriers
+
+Analytics endpoints (optional)
+
+Required API Structure
+
+Create the following routers with full CRUD + validation:
+
+/auth
+
+/users
+
+/products
+
+/categories
+
+/cart
+
+/orders
+
+/courier
+
+/admin
+
+Courier Logic (Very Important)
+
+Courier must be able to:
+
+Fetch list of unassigned orders
+
+Assign order to self
+→ update order.courier_id
+→ status becomes accepted
+
+Update order status:
+
+preparing
+
+on_the_way
+
+delivered
+
+View all assigned orders
+
+Complete delivery
+
+Implement safety checks:
+
+Courier cannot assign an already assigned order
+
+Orders must follow strict status transitions
+
+Database Requirements (SQLite-friendly)
+
+Create SQLite models for:
+
+Users
+
+id, name, phone, email, hashed_password, address, role
+
+Products
+
+id, name, price, discount_price, stock, expiration_date, category_id, supplier_id
+
+Categories
+Suppliers
+CartItems
+
+user_id, product_id, quantity
+
+Orders
+
+id, user_id, courier_id, total_price, payment_method, address, status, created_at
+
+OrderItems
+
+order_id, product_id, quantity, price
+
+CourierLocations
+
+courier_id, lat, lng, updated_at
+
+Feedback
+
+user_id, order_id, rating, comment
+
+Technical Requirements
+
+Use dependency injection (Depends)
+
+JWT auth with role-based access
+
+Async SQLAlchemy (sqlalchemy.ext.asyncio)
+
+Repository/service pattern
+
+Meaningful HTTP codes + error models
+
+Pydantic schemas separated as:
+
+request DTOs
+
+response DTOs
+
+Add unit-test templates
+
+Include OpenAPI tags for each router
+
+Output Requirements
+
+Generate:
+
+Full project folder structure (app/…)
+
+All Python files with ready-to-run code:
+
+routers
+
+services
+
+models
+
+database connection
+
+main.py
+
+security (JWT)
+
+Include sample seed data (products, categories)
+
+Provide instructions on how to run:
+
+uvicorn app.main:app --reload
+
+
+Provide example API calls (curl or POSTMAN)
+
+Final Instruction
+
+Build the entire backend as if it were going into production MVP.
+Prioritize clarity, modularity, and correctness.
+All code must be executable as-is.
